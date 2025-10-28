@@ -9,29 +9,35 @@ public class PipeSpawner : MonoBehaviour
     [SerializeField] private GameObject _pipe;
 
     private float _timer;
-
-    private void Start()
-    {
-        SpawnPipe();
-    }
+    private bool _hasSpawnedInitial = false;
 
     private void Update()
     {
+        if (!GameManager.instance.IsStarted)
+        {
+            _timer = 0; 
+            return;
+        }
+
+        if (!_hasSpawnedInitial)
+        {
+            SpawnPipe();
+            _hasSpawnedInitial = true;
+        }
+
+        _timer += Time.deltaTime;
         if (_timer > _maxTime)
         {
             SpawnPipe();
             _timer = 0;
         }
-
-        _timer += Time.deltaTime;
-
     }
 
     private void SpawnPipe()
     {
         Vector3 spawnPos = transform.position + new Vector3(0, Random.Range(-_heightRange, _heightRange));
         GameObject pipe = Instantiate(_pipe, spawnPos, Quaternion.identity);
-
         Destroy(pipe, 10f);
     }
 }
+

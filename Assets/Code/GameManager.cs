@@ -9,27 +9,38 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _gameOverCanvas;
 
+    public bool IsStarted { get; private set; } = false;
+
     private void Awake()
     {
-       if(instance == null)
-        {
+        if (instance == null)
             instance = this;
-        }
 
+        Time.timeScale = 0f; 
+        IsStarted = false;
+
+        if (_gameOverCanvas != null)
+            _gameOverCanvas.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        if (IsStarted) return;
+
+        IsStarted = true;
         Time.timeScale = 1f;
     }
 
     public void GameOver()
     {
-        _gameOverCanvas.SetActive(true);
+        if (_gameOverCanvas != null)
+            _gameOverCanvas.SetActive(true);
 
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; 
     }
 
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-  
 }

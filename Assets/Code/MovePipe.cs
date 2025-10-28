@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovePipe : MonoBehaviour
@@ -8,6 +6,9 @@ public class MovePipe : MonoBehaviour
 
     private void Update()
     {
+        if (!GameManager.instance.IsStarted) return; 
+
         transform.position += Vector3.left * _speed * Time.deltaTime;
     }
 }
+
